@@ -1,17 +1,58 @@
 import { RestaurentCard } from "./ReastaurentCard"
-import { resobj } from "../utils/mockdata";
+// import { resobj } from "../utils/mockdata";
 import { useState } from "react";
+import { useEffect } from "react";
+import { Shimmer } from "./Shimmer";
+import { resobj } from "../utils/mockdata";
 const Body=()=>{
-    let [filterres,setFilterres]=useState(resobj)
+    let [listOfRestaurent,setListOfRestaurent]=useState([]);
+    const [filteredRes, setFilteredRes] = useState([]);
+    const[searchtext,setSearchtext]=useState("");
+    useEffect(()=>{
+        fetchData();
+    },[])
+
+const fetchData = async () => {
+    const data = await fetch(
+    //   "https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9580069&lng=77.6092188&collection=80475&tags=&sortBy=&filters=&type=rcv2&offset=0&page_type=null"
+    "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=0&page_type=null"
+    );
+
+    const JSON = await data.json();
+    console.log(JSON);
+    const restaurantArray = JSON?.data?.cards
+      .filter(
+        (card) =>
+          card?.card?.card?.["@type"] ===
+          "type.googleapis.com/swiggy.presentation.food.v2.Restaurant"
+      )
+      .map((card) => card?.card?.card?.info);
+
+    setListOfRestaurent(restaurantArray || []);
+    setFilteredRes(restaurantArray || []);
+  };
+  if(listOfRestaurent.length===0){
+    return <Shimmer/>
+  }
+  const handleSearch = () => {
+    const filteredData = listOfRestaurent.filter((res) =>
+      res?.name?.toLowerCase().includes(searchtext.toLowerCase())
+    );
+    setFilteredRes(filteredData);
+  };
     return(
         <div className="body">
-        <div className="search">search</div>
-        <button className="filter-btn" onClick={()=>{setFilterres(filterres.filter(res=>res.avgRating>4.5))}}>Top Rated Restaurents</button>
+        <div className="search">
+          <div className="search-input">
+            <input type="text" value={searchtext} onChange={(e)=>{setSearchtext(e.target.value)}}/>
+          </div>
+          <div><button className="search-btn" onClick={
+            handleSearch
+          }>Search</button></div>
+        </div>
+        <button className="filter-btn" onClick={()=>{setFilteredRes(listOfRestaurent.filter(res=>res.avgRating>4.3))}}>Top Rated Restaurents</button>
         <div className="res-container">
-            {/* <RestaurentCard img={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/FOOD_CATALOG/IMAGES/CMS/2024/4/2/ef5ef046-40af-4f88-9207-ebf1fd6cc3a6_5972f0ff-45ab-4f98-a8c1-04f87556973c.JPG"} resData={resobj[1]}/>
-             <RestaurentCard img={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/a4ffed13eb197c6df43dfe1c756560e5"} resData={resobj[0]} />
-             */}
-             {filterres.map((i,id)=><RestaurentCard resData={i} key={id}/>)}
+             {filteredRes.map((i,id)=><RestaurentCard resData={i} key={id}/>)}
         </div>
         </div>
     )
