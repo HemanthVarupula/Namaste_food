@@ -1,4 +1,5 @@
-import { LOGO_URl } from "../utils/constants"
+import { LOGO_URl } from "../utils/constants";
+import Login from "./Login";
 export const Header=()=>{
     return(
         <div className="header">
@@ -9,6 +10,7 @@ export const Header=()=>{
             <li>About us</li>
             <li>Contact US</li>
             <li>Cart</li>
+           <li> <Login/></li>
         </ul>
         </div>
         </div>

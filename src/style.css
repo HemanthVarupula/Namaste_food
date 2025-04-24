@@ -45,3 +45,28 @@
     height: 120px;
     width: 100%;
 }
+
+.shimmer-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+.shimmer-card{
+    width:200px;
+    height:360px;
+    margin: 20px;
+    background-color: rgb(185, 183, 183);
+}
+
+
+.log-btn{
+    height: 30px;
+    width: 70px;
+    background-color: rgb(133, 178, 245);
+    cursor: pointer;
+}
+
+.search{
+    display: flex;
+    margin: 10px;
+    gap: 15px;
+}
