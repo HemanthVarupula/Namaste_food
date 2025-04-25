@@ -4,33 +4,37 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Shimmer } from "./Shimmer";
 import { resobj } from "../utils/mockdata";
+import { useRef } from "react";
 const Body=()=>{
     let [listOfRestaurent,setListOfRestaurent]=useState([]);
     const [filteredRes, setFilteredRes] = useState([]);
     const[searchtext,setSearchtext]=useState("");
-    const [offset, setOffset] = useState(16); 
+    const [offset, setOffset] = useState(4); 
+    const isFetching = useRef(false);
+
 
     useEffect(()=>{
         fetchData();
     },[])
-
+    
     useEffect(() => {
       const handleScroll = () => {
         const scrollTop = window.scrollY;
         const windowHeight = window.innerHeight;
         const fullHeight = document.body.scrollHeight;
     
-        if (scrollTop + windowHeight >= fullHeight - 300) {
-          update();
+        if (scrollTop + windowHeight >= fullHeight - 300 && !isFetching.current) {
+          isFetching.current = true;
+          update().then(() => {
+            isFetching.current = false;
+          });
         }
-        console.log("Scrolling...", window.scrollY);
       };
     
       window.addEventListener("scroll", handleScroll);
       return () => window.removeEventListener("scroll", handleScroll);
     }, []);
     
-
 const fetchData = async () => {
     const data = await fetch(
     //   "https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9580069&lng=77.6092188&collection=80475&tags=&sortBy=&filters=&type=rcv2&offset=0&page_type=null"
@@ -54,9 +58,11 @@ const fetchData = async () => {
     try {
       const data = await fetch(
         `https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=${offset}&page_type=null`
+        // 'https://www.swiggy.com/dapi/restaurants/list/update'   // this is swiggy api which is upadating on scroll down
       );
   
       const JSON = await data.json();
+      console.log(JSON)
   
       const restaurantArray = JSON?.data?.cards
         ?.filter(
@@ -68,7 +74,7 @@ const fetchData = async () => {
   
       setListOfRestaurent((prev) => [...prev, ...(restaurantArray || [])]);
       setFilteredRes((prev) => [...prev, ...(restaurantArray || [])]);
-      setOffset(offset + 16); // increment for next scroll
+      setOffset(offset + 4); // increment for next scroll
     } catch (error) {
       console.error("Update error:", error);
     }
