@@ -74,3 +74,10 @@
 .rmcolor{
   all:unset;
 }
+
+.user-card{
+    height: auto;
+    width: 100%;
+    border: 1px solid red;
+    padding: 20px;
+}

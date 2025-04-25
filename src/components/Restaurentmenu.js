@@ -1,6 +1,6 @@
 
 import { useEffect,useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Shimmer } from "./Shimmer";
 const Restaurentmenu = () => {
     const[resinfo,setResinfo]=useState(null);
