@@ -70,3 +70,7 @@
     margin: 10px;
     gap: 15px;
 }
+
+.rmcolor{
+  all:unset;
+}
