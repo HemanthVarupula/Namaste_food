@@ -6,14 +6,14 @@ import { Shimmer } from "./Shimmer";
 import { resobj } from "../utils/mockdata";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import useOnlinestatus from "../utils/useOnlinestatus";
 const Body=()=>{
     let [listOfRestaurent,setListOfRestaurent]=useState([]);
     const [filteredRes, setFilteredRes] = useState([]);
     const[searchtext,setSearchtext]=useState("");
     const [offset, setOffset] = useState(4); 
     const isFetching = useRef(false);
-
-
+    const onlinestatus=useOnlinestatus();
     useEffect(()=>{
         fetchData();
     },[])
@@ -90,6 +90,7 @@ const fetchData = async () => {
     );
     setFilteredRes(filteredData);
   };
+  if(onlinestatus===false) return <h1>check internet connection </h1>
     return(
         <div className="body">
         <div className="search">
