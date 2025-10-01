@@ -81,3 +81,16 @@
     border: 1px solid red;
     padding: 20px;
 }
+
+
+.menu{
+    height: auto;
+    width: 100%;
+    border: 1px solid black;
+    margin-top: 10px;
+}
+
+.imgres{
+    height: 40px;
+    width: 70px;
+}
