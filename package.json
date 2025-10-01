@@ -1,0 +1,23 @@
+{
+  "name": "namaste_food",
+  "version": "1.0.0",
+  "target": {
+    "main": "false"
+  },
+  "scripts": {
+    "start": "npx parcel ./src/index.html",
+     "build": "npx build ./src/index.html",
+    "test": "jest"
+  },
+  "author": "hemanth",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "parcel": "^2.14.4"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^6.30.0"
+  }
+}
