@@ -1,5 +1,5 @@
 /node_modules
 /.parcel-cache
 /dist
-/package.json
-/package-lock.json
+package.json
+package-lock.json
